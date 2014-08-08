@@ -6,8 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var debug = require('debug')('barometer');
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
+var routes = require('./routes.json');
 
 var app = express();
 
@@ -22,8 +21,18 @@ app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
-app.use('/users', users);
+app.all('*', function(req, res) {
+    var ctrl = routes[req.path], controller;
+    if (ctrl) {
+        controller = require('./routes/' + ctrl + '.js');
+        controller(req, res);
+    } else {
+        res.send('path not found');
+    }
+});
+
+//app.use('/', routes);
+//app.use('/users', users);
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -59,7 +68,5 @@ app.use(function(err, req, res, next) {
 app.set('port', process.env.PORT || 3000);
 
 var server = app.listen(app.get('port'), function() {
-  debug('Express server listening on port ' + server.address().port);
+  console.log('Express server listening on port ' + server.address().port);
 });
-
-
