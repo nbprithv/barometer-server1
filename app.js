@@ -9,10 +9,15 @@ var debug = require('debug')('barometer');
 var routes = require('./routes.json');
 
 var app = express();
+var exphbs = require('express-handlebars');
+
+//Create a db object here, and pass it in with each request. Only one connection will be opened for now.
+var db = require('./routes/db.js');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+app.set('view engine', 'handlebars');
 
 app.use(favicon());
 app.use(logger('dev'));
@@ -23,6 +28,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.all('*', function(req, res) {
     var ctrl = routes[req.path], controller;
+    req.db = new db();
     if (ctrl) {
         controller = require('./routes/' + ctrl + '.js');
         controller(req, res);

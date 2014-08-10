@@ -23,6 +23,13 @@
             "icon": "http://s3-media3.fl.yelpcdn.com/bphoto/sLxd6UmJc5i2j2OeGlJh3A/60s.jpg"
         },
         {
+            "name": "Gravity Bistro and Bar",
+            "address": "544 Emerson St, Palo Alto, CA 94301",
+            "latitude": "37.4439631",
+            "longitude": "-122.161818",
+            "icon": "http://s3-media3.fl.yelpcdn.com/bphoto/sLxd6UmJc5i2j2OeGlJh3A/60s.jpg"
+        },
+        {
             "name": "Vino Locale",
             "address": "431 Kipling St Palo Alto, CA 94301",
             "latitude": "37.4376575",
