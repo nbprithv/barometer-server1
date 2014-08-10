@@ -14,6 +14,16 @@ var exphbs = require('express-handlebars');
 //Create a db object here, and pass it in with each request. Only one connection will be opened for now.
 var db = require('./routes/db.js');
 
+//get the env and fill in config
+var config = require('./config.json');
+if (process.env && process.env.ENV === 'prod') {
+    config = config.env.prod;
+} else {
+    config = config.env.dev;
+}
+console.log(process.env.ENV);
+console.log(config);
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
@@ -28,7 +38,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.all('*', function(req, res) {
     var ctrl = routes[req.path], controller;
-    req.db = new db();
+    req.db = new db(config);
     if (ctrl) {
         controller = require('./routes/' + ctrl + '.js');
         controller(req, res);

@@ -1,0 +1,21 @@
+{
+    "env":
+        {
+            "dev":
+                {
+                    "dbhost": "localhost",
+                    "dbport": "5432",
+                    "dbname": "barometer",
+                    "dbuser": "postgres",
+                    "dbpw"  : "12345"
+                },
+            "prod":
+                {
+                    "dbhost": "ec2-54-221-223-92.compute-1.amazonaws.com",
+                    "dbport": "5432",
+                    "dbname": "d90ms87umc1fj1",
+                    "dbuser": "eeocsdrkggogjn",
+                    "dbpw"  : "0h3XwlkZ9pj5US8s8SfaFzzn08"
+                }
+        }
+}

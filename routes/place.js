@@ -7,11 +7,11 @@ var place = function (req, res) {
 };
 
 place.prototype.addPlace = function (req, res) {
-    console.log(req.body);
     if (req.body && req.body.name && req.body.address && req.body.latitude && req.body.longitude) {
-        if (req.db.addPlace(req.body)) {
+        req.db.addPlace(req.body, function (err, results) {
+            console.log(results);
             res.render('addPlace', {success:1});    
-        }
+        });
     } else {
         res.render('addPlace');    
     }
@@ -23,13 +23,8 @@ place.prototype.getPlace = function (req, res) {
         currlat = req.query.currlat;
     places.results = {};
 
-    async.series([
-        function(callback) {
-            req.db.getPlaces(callback);
-        }
-    ],
-    function (err, results) {
-        places.results = results[0];
+    req.db.getPlaces(function (err, results) {
+        places.results = results;
         for (var i = 0; i < places.results.length; i++) {
             var distance = geolib.getDistance({latitude: currlat, longitude: currlong},
                                     {latitude: places.results[i].latitude, longitude: places.results[i].longitude}, 10);
@@ -42,7 +37,6 @@ place.prototype.getPlace = function (req, res) {
         res.set('Content-Type', 'application/json');
         res.json(places);
     });
-
 };
 
 

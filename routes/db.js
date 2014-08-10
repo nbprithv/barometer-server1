@@ -1,25 +1,44 @@
-var sqlite3 = require('sqlite3');
-var db = new sqlite3.Database('barometer.sqlite');
+var pg = require('pg');
 var async = require('async');
 
-var dbClass = function () {
+var dbClass = function (config) {
+    this.config = config;
+    this.connstring = "postgres://"+config.dbuser+":"+config.dbpw+"@"+config.dbhost+"/"+config.dbname;
 };
 
-dbClass.prototype.addPlace = function (obj) {
-    var stmt = db.prepare("INSERT INTO places (name, address, latitude, longitude) VALUES ('"+obj.name+"', '"+obj.address+"', '"+obj.latitude+"', '"+obj.longitude+"')");
-    stmt.run();
-    stmt.finalize();
-    return 1;
+dbClass.prototype.addPlace = function (obj, cb) {
+    pg.connect(this.connstring, function(err, client, cb) {
+        if(err) {
+            return console.error('error fetching client from pool', err);
+        }
+        
+        client.query("INSERT INTO places (name, address, latitude, longitude) VALUES ('"+obj.name+"', '"+obj.address+"', '"+obj.latitude+"', '"+obj.longitude+"')",
+            function(err, results) {
+                if(err) {
+                    return console.error('error running query', err);
+                }
+                cb(err, results);
+            }
+        );
+    });
 };
 
 dbClass.prototype.getPlaces = function (cb) {
     var ret = [];
-    db.each("SELECT * FROM places",
-    function(err, row) {
-        ret.push(row);
-    },
-    function (err, ctx){
-        cb('', ret);
+    pg.connect(this.connstring, function(err, client, done) {
+        if(err) {
+            return console.error('error fetching client from pool', err);
+        }
+        
+        client.query("SELECT * FROM places",
+            function(err, results) {
+                done();
+                if(err) {
+                    return console.error('error running query', err);
+                }
+                cb(err, results.rows);
+            }
+        );
     });
 };
 
