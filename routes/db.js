@@ -7,13 +7,14 @@ var dbClass = function (config) {
 };
 
 dbClass.prototype.addPlace = function (obj, cb) {
-    pg.connect(this.connstring, function(err, client, cb) {
+    pg.connect(this.connstring, function(err, client, done) {
         if(err) {
             return console.error('error fetching client from pool', err);
         }
         
         client.query("INSERT INTO places (name, address, latitude, longitude) VALUES ('"+obj.name+"', '"+obj.address+"', '"+obj.latitude+"', '"+obj.longitude+"')",
             function(err, results) {
+                done();
                 if(err) {
                     return console.error('error running query', err);
                 }
