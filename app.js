@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var debug = require('debug')('barometer');
+var mysql = require('mysql');
 
 var routes = require('./routes.json');
 
@@ -21,6 +22,7 @@ if (process.env && process.env.ENV === 'prod') {
 } else {
     config = config.env.dev;
 }
+
 console.log(process.env.ENV);
 console.log(config);
 

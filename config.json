@@ -4,10 +4,10 @@
             "dev":
                 {
                     "dbhost": "localhost",
-                    "dbport": "5432",
-                    "dbname": "barometer",
-                    "dbuser": "postgres",
-                    "dbpw"  : "12345"
+                    "dbport": "8889",
+                    "dbname": "baromeether",
+                    "dbuser": "root",
+                    "dbpw"  : "qwerty123456"
                 },
             "prod":
                 {

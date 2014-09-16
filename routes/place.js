@@ -19,8 +19,8 @@ place.prototype.addPlace = function (req, res) {
 
 place.prototype.getPlace = function (req, res) {
     var places = {},// = req.db.getPlaces(),
-        currlong = req.query.currlong,
-        currlat = req.query.currlat;
+        currlong = -122.025168;//req.query.currlong,
+        currlat = 37.417277;//req.query.currlat;
     places.results = {};
 
     req.db.getPlaces(function (err, results) {
@@ -39,6 +39,8 @@ place.prototype.getPlace = function (req, res) {
     });
 };
 
+place.prototype.logLocation = function (req, res) {
+};
 
 module.exports = function (req, res) {
     var action = req.query && req.query.action, places = new place();
@@ -48,6 +50,9 @@ module.exports = function (req, res) {
             break;
         case 'add_place':
             places.addPlace(req, res);
+            break;
+        case 'log_location':
+            places.logLocation(req, res);
             break;
         default:
             res.send('action isnt defined');

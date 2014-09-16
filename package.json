@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node app.js"
   },
   "dependencies": {
     "express": "~4.2.0",
@@ -16,6 +16,7 @@
     "express-handlebars": "~1.0.1",
     "geolib": "2.0.14",
     "pg": "3.4.0",
+    "mysql": "2.5.*",
     "async": "*"
   }
 }
